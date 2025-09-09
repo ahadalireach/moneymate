@@ -1,4 +1,3 @@
-import React from "react";
 import { TypoProps } from "../types";
 import { colors } from "../constants/theme";
 import { verticalScale } from "../utils/styling";

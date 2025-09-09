@@ -1,12 +1,4 @@
-import { Href } from "expo-router";
-import { Firestore, Timestamp } from "firebase/firestore";
-import { Icon } from "phosphor-react-native";
-import React, { ReactNode } from "react";
 import {
-  ActivityIndicator,
-  ActivityIndicatorProps,
-  ImageStyle,
-  PressableProps,
   TextInput,
   TextInputProps,
   TextProps,
@@ -14,6 +6,9 @@ import {
   TouchableOpacityProps,
   ViewStyle,
 } from "react-native";
+import { ReactNode } from "react";
+import { Icon } from "phosphor-react-native";
+import { Timestamp } from "firebase/firestore";
 
 export type ScreenWrapperProps = {
   style?: ViewStyle;

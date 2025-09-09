@@ -1,11 +1,8 @@
-import React from "react";
 import { router } from "expo-router";
-import Typo from "../../components/Typo";
-import Button from "../../components/Button";
 import { verticalScale } from "../../utils/styling";
-import ScreenWrapper from "../../components/ScreenWrapper";
+import { Button, ScreenWrapper, Typo } from "../../components";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { colors, spacingX, spacingY } from "../../constants/theme";
-import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import Animated, { FadeIn, FadeInDown } from "react-native-reanimated";
 
 const Welcome = () => {

@@ -1,5 +1,5 @@
+import { useEffect } from "react";
 import { useRouter } from "expo-router";
-import React, { useEffect } from "react";
 import { colors } from "../constants/theme";
 import { Image, StyleSheet, View } from "react-native";
 

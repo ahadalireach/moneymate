@@ -1,4 +1,3 @@
-import React from "react";
 import Loading from "./Loading";
 import { CustomButtonProps } from "../types";
 import { verticalScale } from "../utils/styling";

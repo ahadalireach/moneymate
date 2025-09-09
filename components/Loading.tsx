@@ -1,4 +1,3 @@
-import React from "react";
 import { colors } from "../constants/theme";
 import { ActivityIndicator, ActivityIndicatorProps, View } from "react-native";
 
