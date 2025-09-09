@@ -23,7 +23,6 @@ const Login = () => {
       Alert.alert("Login", "Please fill all the fields");
       return;
     }
-    console.log(emailRef, passwordRef);
   };
 
   return (
