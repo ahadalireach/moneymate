@@ -49,12 +49,6 @@ export default function CustomTabs({
     <View style={styles.tabbar}>
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key];
-        const label: any =
-          options.tabBarLabel !== undefined
-            ? options.tabBarLabel
-            : options.title !== undefined
-            ? options.title
-            : route.name;
 
         const isFocused = state.index === index;
 
@@ -79,7 +73,6 @@ export default function CustomTabs({
 
         return (
           <TouchableOpacity
-            // href={buildHref(route.name, route.params)}
             key={route.name}
             accessibilityState={isFocused ? { selected: true } : {}}
             accessibilityLabel={options.tabBarAccessibilityLabel}
@@ -100,7 +93,6 @@ const styles = StyleSheet.create({
   tabbar: {
     flexDirection: "row",
     width: "100%",
-    // height: Platform.OS == "ios" ? verticalScale(73) : verticalScale(55),
     height: Platform.OS === "ios" ? verticalScale(73) : verticalScale(110),
     backgroundColor: colors.neutral800,
     justifyContent: "space-around",
