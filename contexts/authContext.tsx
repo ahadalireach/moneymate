@@ -1,20 +1,37 @@
 import {
   createUserWithEmailAndPassword,
+  onAuthStateChanged,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { useRoute } from "@react-navigation/native";
 import { AuthContextType, UserType } from "../types";
 import { auth, firestore } from "../config/firebase";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { createContext, useContext, useEffect, useState } from "react";
+import { router } from "expo-router";
 
 export const AuthContext = createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const router = useRoute();
   const [user, setUser] = useState<UserType>(null);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (firebaseUser) {
+        setUser({
+          uid: firebaseUser?.uid,
+          email: firebaseUser?.email,
+          name: firebaseUser?.displayName,
+        });
+        await updateUserData(firebaseUser.uid);
+        router.push("/(tabs)");
+      } else {
+        setUser(null);
+        router.push("/(auth)/Welcome");
+      }
+    });
+
+    return () => unsub();
+  }, []);
 
   const login = async (email: string, password: string) => {
     try {
