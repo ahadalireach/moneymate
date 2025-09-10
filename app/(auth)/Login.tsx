@@ -11,8 +11,11 @@ import { verticalScale } from "../../utils/styling";
 import { AtIcon, LockIcon } from "phosphor-react-native";
 import { colors, spacingY } from "../../constants/theme";
 import { Alert, Pressable, StyleSheet, View } from "react-native";
+import { useAuth } from "../../contexts/authContext";
 
 const Login = () => {
+  const { login } = useAuth();
+
   const router = useRouter();
   const emailRef = useRef("");
   const passwordRef = useRef("");
@@ -23,6 +26,20 @@ const Login = () => {
       Alert.alert("Login", "Please fill all the fields");
       return;
     }
+
+    setIsLoading(true);
+    try {
+      const res = await login(emailRef.current, passwordRef.current);
+      if (!res.success) {
+        Alert.alert("Login", res.msg);
+      } else {
+        Alert.alert("Success", "Loggedin successfully!");
+      }
+    } catch (error: any) {
+      console.error("Registration error:", error);
+      Alert.alert("Error", "Something went wrong. Please try again.");
+    }
+    setIsLoading(false);
   };
 
   return (

@@ -14,8 +14,9 @@ import { Alert, Pressable, StyleSheet, View } from "react-native";
 import { AtIcon, LockIcon, UserIcon } from "phosphor-react-native";
 
 const Register = () => {
-  const router = useRouter();
   const { register } = useAuth();
+
+  const router = useRouter();
   const nameRef = useRef("");
   const emailRef = useRef("");
   const passwordRef = useRef("");
