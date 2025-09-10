@@ -1,15 +1,15 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Stack } from "expo-router";
-import { StyleSheet, Text } from "react-native";
+import { AuthProvider } from "../contexts/authContext";
 
-const _layout = () => {
-  return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Text>_layout</Text>
-    </Stack>
-  );
+const StackLayout = () => {
+  return <Stack screenOptions={{ headerShown: false }} />;
 };
 
-export default _layout;
-
-const styles = StyleSheet.create({});
+const RootLayout = () => {
+  return (
+    <AuthProvider>
+      <StackLayout />
+    </AuthProvider>
+  );
+};
+export default RootLayout;

@@ -8,12 +8,14 @@ import {
 import { useRouter } from "expo-router";
 import { useRef, useState } from "react";
 import { verticalScale } from "../../utils/styling";
-import { AtIcon, LockIcon, UserIcon } from "phosphor-react-native";
+import { useAuth } from "../../contexts/authContext";
 import { colors, spacingY } from "../../constants/theme";
 import { Alert, Pressable, StyleSheet, View } from "react-native";
+import { AtIcon, LockIcon, UserIcon } from "phosphor-react-native";
 
 const Register = () => {
   const router = useRouter();
+  const { register } = useAuth();
   const nameRef = useRef("");
   const emailRef = useRef("");
   const passwordRef = useRef("");
@@ -24,6 +26,24 @@ const Register = () => {
       Alert.alert("Register", "Please fill all the fields");
       return;
     }
+
+    setIsLoading(true);
+    try {
+      const res = await register(
+        emailRef.current,
+        passwordRef.current,
+        nameRef.current
+      );
+      if (!res.success) {
+        Alert.alert("Sign up", res.msg);
+      } else {
+        Alert.alert("Success", "Account created successfully!");
+      }
+    } catch (error: any) {
+      console.error("Registration error:", error);
+      Alert.alert("Error", "Something went wrong. Please try again.");
+    }
+    setIsLoading(false);
   };
 
   return (
