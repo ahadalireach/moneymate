@@ -1,5 +1,6 @@
 import { useRouter } from "expo-router";
 import { signOut } from "firebase/auth";
+import { Image } from "expo-image";
 import { accountOptions } from "../../data";
 import { auth } from "../../config/firebase";
 import { accountOptionType } from "../../types";
@@ -9,8 +10,8 @@ import { CaretRightIcon } from "phosphor-react-native";
 import { getProfileImage } from "../../services/imageService";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import { Header, ScreenWrapper, Typo } from "../../components";
+import { Alert, StyleSheet, View, TouchableOpacity } from "react-native";
 import { colors, radius, spacingX, spacingY } from "../../constants/theme";
-import { Alert, Image, StyleSheet, View, TouchableOpacity } from "react-native";
 
 const Profile = () => {
   const { user } = useAuth();
@@ -54,6 +55,8 @@ const Profile = () => {
             <Image
               source={getProfileImage(user?.image)}
               style={styles.avatar}
+              contentFit="cover"
+              transition={200}
             />
           </View>
           <View style={styles.nameContainer}>

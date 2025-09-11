@@ -56,6 +56,8 @@ export default {
       API_KEY: process.env.API_KEY,
       APP_ID: process.env.APP_ID,
       STORAGE_BUCKET: process.env.STORAGE_BUCKET,
+      CLOUD_NAME: process.env.CLOUD_NAME,
+      UPLOAD_PRESET: process.env.UPLOAD_PRESET,
     },
   },
 };

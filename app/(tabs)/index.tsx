@@ -2,9 +2,8 @@ import { signOut } from "firebase/auth";
 import { auth } from "../../config/firebase";
 import { verticalScale } from "../../utils/styling";
 import { StyleSheet, Text, View } from "react-native";
+import { Button, ScreenWrapper } from "../../components";
 import { colors, spacingX, spacingY } from "../../constants/theme";
-import { Button } from "@react-navigation/elements";
-import { ScreenWrapper } from "../../components";
 
 const index = () => {
   const handleLogout = async () => {
