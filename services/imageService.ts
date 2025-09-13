@@ -7,8 +7,6 @@ const UPLOAD_PRESET = Constants.expoConfig?.extra?.UPLOAD_PRESET;
 const CLOUDINARY_API_URL = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
 
 export const getProfileImage = (file: any) => {
-  console.log(file);
-
   if (file && typeof file == "string") return file;
   if (file && typeof file == "object") return file.uri;
 
@@ -16,8 +14,6 @@ export const getProfileImage = (file: any) => {
 };
 
 export const getProfilePath = (file: any) => {
-  console.log(file);
-
   if (file && typeof file == "string") return file;
   if (file && typeof file == "object") return file.uri;
 

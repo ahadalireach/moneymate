@@ -8,16 +8,18 @@ import CustomTabs from "./CustomTabs";
 import ImageUpload from "./ImageUpload";
 import ModalWrapper from "./ModalWrapper";
 import ScreenWrapper from "./ScreenWrapper";
+import WalletListItem from "./WalletListItem";
 
 export {
-  Button,
   Typo,
   Input,
-  BackButton,
+  Button,
   Header,
-  ScreenWrapper,
   Loading,
+  BackButton,
   CustomTabs,
-  ModalWrapper,
   ImageUpload,
+  ModalWrapper,
+  ScreenWrapper,
+  WalletListItem,
 };
