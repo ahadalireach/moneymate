@@ -1,17 +1,46 @@
+import {
+  GearSixIcon,
+  LockIcon,
+  PowerIcon,
+  UserIcon,
+  CaretRightIcon,
+} from "phosphor-react-native";
 import { useRouter } from "expo-router";
 import { signOut } from "firebase/auth";
 import { Image } from "expo-image";
-import { accountOptions } from "../../data";
 import { auth } from "../../config/firebase";
 import { accountOptionType } from "../../types";
 import { verticalScale } from "../../utils/styling";
 import { useAuth } from "../../contexts/authContext";
-import { CaretRightIcon } from "phosphor-react-native";
 import { getProfileImage } from "../../services/imageService";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import { Header, ScreenWrapper, Typo } from "../../components";
 import { Alert, StyleSheet, View, TouchableOpacity } from "react-native";
 import { colors, radius, spacingX, spacingY } from "../../constants/theme";
+
+const accountOptions: accountOptionType[] = [
+  {
+    title: "Edit Profile",
+    icon: <UserIcon size={26} color={colors.white} weight="fill" />,
+    routeName: "/(modals)/ProfileModal",
+    bgColor: "#6366f1",
+  },
+  {
+    title: "Settings",
+    icon: <GearSixIcon size={26} color={colors.white} weight="fill" />,
+    bgColor: "#6366f1",
+  },
+  {
+    title: "Privacy Policy",
+    icon: <LockIcon size={26} color={colors.white} weight="fill" />,
+    bgColor: colors.neutral600,
+  },
+  {
+    title: "Logout",
+    icon: <PowerIcon size={26} color={colors.white} />,
+    bgColor: "#e11d48",
+  },
+];
 
 const Profile = () => {
   const { user } = useAuth();
