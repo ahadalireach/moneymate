@@ -158,7 +158,7 @@ const WalletModal = () => {
             />
           </Button>
         )}
-        <Button loading={isLoading} onPress={onSubmit} style={{ flex: 1 }}>
+        <Button isLoading={isLoading} onPress={onSubmit} style={{ flex: 1 }}>
           <Typo color={colors.black} fontWeight={"700"}>
             {oldWallet?.id ? "Update Wallet" : "Add Wallet"}
           </Typo>

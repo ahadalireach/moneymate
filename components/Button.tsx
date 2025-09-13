@@ -7,10 +7,10 @@ import { StyleSheet, TouchableOpacity, View } from "react-native";
 const Button = ({
   style,
   onPress,
-  loading = false,
+  isLoading = false,
   children,
 }: CustomButtonProps) => {
-  if (loading) {
+  if (isLoading) {
     return (
       <View style={[styles.button, style, { backgroundColor: "transparent" }]}>
         <Loading />
