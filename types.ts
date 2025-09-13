@@ -88,7 +88,7 @@ export type ExpenseCategoriesType = {
 export type TransactionListType = {
   data: TransactionType[];
   title?: string;
-  loading?: boolean;
+  isLoading?: boolean;
   emptyListMessage?: string;
 };
 
@@ -110,7 +110,7 @@ export interface InputProps extends TextInputProps {
 export interface CustomButtonProps extends TouchableOpacityProps {
   style?: ViewStyle;
   onPress?: () => void;
-  loading?: boolean;
+  isLoading?: boolean;
   children: React.ReactNode;
 }
 
