@@ -1,4 +1,13 @@
 import {
+  Alert,
+  Platform,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import {
   BackButton,
   Button,
   Header,
@@ -9,25 +18,20 @@ import {
 } from "../../components";
 import { useEffect, useState } from "react";
 import { TrashIcon } from "phosphor-react-native";
+import useFetchData from "../../hooks/useFetchData";
+import { orderBy, where } from "firebase/firestore";
 import { useAuth } from "../../contexts/authContext";
 import { Dropdown } from "react-native-element-dropdown";
 import { TransactionType, WalletType } from "../../types";
 import { scale, verticalScale } from "../../utils/styling";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import {
-  Alert,
-  Platform,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from "react-native";
 import { colors, radius, spacingX, spacingY } from "../../constants/theme";
 import { expenseCategories, transactionTypes } from "../../constants/data";
-import useFetchData from "../../hooks/useFetchData";
-import { orderBy, where } from "firebase/firestore";
+import {
+  createOrUpdateTransaction,
+  deleteTransaction,
+} from "../../services/transactionService";
 
 const TransactionModal = () => {
   const router = useRouter();
@@ -50,14 +54,38 @@ const TransactionModal = () => {
     orderBy("created", "desc"),
   ]);
 
-  const oldTransaction: { name: string; image: string; id: string } =
-    useLocalSearchParams();
+  type paramType = {
+    id: string;
+    type: string;
+    amount: string;
+    description?: string;
+    date: string;
+    category?: string;
+    image?: any;
+    uid?: string;
+    walletId: string;
+  };
+  const oldTransaction: paramType = useLocalSearchParams();
 
   const onDateChange = (event: any, selectedDate: any) => {
     const currentDate = selectedDate || transaction.date;
     setTransaction({ ...transaction, date: currentDate });
     setShowDatePicker(Platform.OS === "ios" ? true : false);
   };
+
+  useEffect(() => {
+    if (oldTransaction?.id) {
+      setTransaction({
+        type: oldTransaction?.type,
+        category: oldTransaction?.category || "",
+        amount: Number(oldTransaction.amount),
+        description: oldTransaction.description || "",
+        image: oldTransaction?.image,
+        date: new Date(oldTransaction.date),
+        walletId: oldTransaction.walletId,
+      });
+    }
+  }, []);
 
   const onSubmit = async () => {
     const { type, amount, description, category, date, walletId, image } =
@@ -80,6 +108,58 @@ const TransactionModal = () => {
     };
 
     if (oldTransaction?.id) transactionData.id = oldTransaction.id;
+    setIsLoading(true);
+    try {
+      const res = await createOrUpdateTransaction(transactionData);
+      setIsLoading(false);
+      if (res.success) {
+        router.back();
+      } else {
+        Alert.alert("Transaction", res.msg);
+      }
+    } catch (error: any) {
+      console.error("Transaction error:", error);
+      Alert.alert("Error", "Something went wrong. Please try again.");
+      setIsLoading(false);
+    }
+  };
+
+  const onDelete = async () => {
+    if (!oldTransaction?.id) {
+      return;
+    }
+    setIsLoading(true);
+    try {
+      const res = await deleteTransaction(
+        oldTransaction?.id,
+        oldTransaction?.walletId
+      );
+      setIsLoading(false);
+      if (res.success) {
+        router.back();
+      } else {
+        Alert.alert("Transaction", res.msg);
+      }
+    } catch (error: any) {
+      console.error("Delete transaction error:", error);
+      Alert.alert("Error", "Something went wrong. Please try again.");
+      setIsLoading(false);
+    }
+  };
+
+  const showDeleteAlert = () => {
+    Alert.alert(
+      "Confirm",
+      "Are you sure you want to do this? \nThis action will remove all the data related to this transaction",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel delete"),
+          style: "cancel",
+        },
+        { text: "Delete", onPress: () => onDelete(), style: "destructive" },
+      ]
+    );
   };
 
   return (
