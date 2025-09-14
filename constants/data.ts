@@ -7,7 +7,7 @@ import {
   ForkKnifeIcon,
   HeartIcon,
   ShieldCheckIcon,
-  PiggyBankIcon,
+  WalletIcon,
   TShirtIcon,
   UserIcon,
   DotsThreeOutlineIcon,
@@ -67,7 +67,7 @@ export const expenseCategories: ExpenseCategoriesType = {
   savings: {
     label: "Savings",
     value: "savings",
-    icon: PiggyBankIcon,
+    icon: WalletIcon,
     bgColor: "#065F46",
   },
   clothing: {
