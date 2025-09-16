@@ -1,10 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   collection,
   onSnapshot,
   query,
   QueryConstraint,
 } from "firebase/firestore";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 import { firestore } from "../config/firebase";
 
 const useFetchData = <T>(
@@ -15,58 +16,34 @@ const useFetchData = <T>(
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const memoizedConstraints = useMemo(
-    () => constraints,
-    [JSON.stringify(constraints)]
-  );
-
   useEffect(() => {
-    if (!collectionName) {
-      setIsLoading(false);
-      return;
-    }
+    if (!collectionName) return;
+    const collectionRef = collection(firestore, collectionName);
+    const q = query(collectionRef, ...constraints);
 
-    setError(null);
-    setIsLoading(true);
+    const unsub = onSnapshot(
+      q,
+      (snapshot) => {
+        const fetchedData = snapshot.docs.map((doc) => {
+          return {
+            id: doc.id,
+            ...doc.data(),
+          };
+        }) as T[];
+        setData(fetchedData);
+        setIsLoading(false);
+      },
+      (err) => {
+        console.log("Error fetching data:", err);
+        setError(err.message);
+        setIsLoading(false);
+      }
+    );
 
-    try {
-      const collectionRef = collection(firestore, collectionName);
-      const q = query(collectionRef, ...memoizedConstraints);
-
-      const unsub = onSnapshot(
-        q,
-        (snapshot) => {
-          try {
-            const fetchedData = snapshot.docs.map((doc) => {
-              return {
-                id: doc.id,
-                ...doc.data(),
-              };
-            }) as T[];
-            setData(fetchedData);
-            setIsLoading(false);
-          } catch (mappingError: any) {
-            console.error("Error mapping document data:", mappingError);
-            setError("Failed to process data");
-            setIsLoading(false);
-          }
-        },
-        (err) => {
-          console.error("Error fetching data:", err);
-          setError(err.message || "Failed to fetch data");
-          setIsLoading(false);
-        }
-      );
-
-      return () => {
-        unsub();
-      };
-    } catch (setupError: any) {
-      console.error("Error setting up data listener:", setupError);
-      setError(setupError.message || "Failed to setup data listener");
-      setIsLoading(false);
-    }
-  }, [collectionName, memoizedConstraints]);
+    return () => {
+      unsub();
+    };
+  }, []);
 
   return { data, isLoading, error };
 };

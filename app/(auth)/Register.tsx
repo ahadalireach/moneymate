@@ -68,7 +68,7 @@ const Register = () => {
           <Input
             onChangeText={(value) => (nameRef.current = value)}
             placeholder="Enter your name..."
-            icon={<UserIcon size={26} color={colors.neutral200} />}
+            icon={<UserIcon size={26} color={colors.neutral400} />}
           />
           <Input
             onChangeText={(value) => (emailRef.current = value)}
@@ -82,8 +82,8 @@ const Register = () => {
             icon={<LockIcon size={26} color={colors.neutral400} />}
           />
 
-          <Button onPress={handleSubmit} loading={isLoading}>
-            <Typo fontWeight={"700"} color={colors.black} size={21}>
+          <Button onPress={handleSubmit} isLoading={isLoading}>
+            <Typo fontWeight={"700"} color={colors.white} size={21}>
               Register
             </Typo>
           </Button>

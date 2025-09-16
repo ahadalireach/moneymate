@@ -11,8 +11,8 @@ import { FlashList } from "@shopify/flash-list";
 import { verticalScale } from "../utils/styling";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { colors, radius, spacingX, spacingY } from "../constants/theme";
 import { expenseCategories, incomeCategory } from "../constants/data";
+import { colors, radius, spacingX, spacingY } from "../constants/theme";
 
 const TransactionList = ({
   data,
@@ -42,7 +42,7 @@ const TransactionList = ({
   return (
     <View style={styles.container}>
       {title && (
-        <Typo size={20} fontWeight={"500"}>
+        <Typo size={20} fontWeight={"500"} color={colors.text}>
           {title}
         </Typo>
       )}
@@ -61,7 +61,7 @@ const TransactionList = ({
       {!isLoading && data.length === 0 && (
         <Typo
           size={15}
-          color={colors.neutral400}
+          color={colors.textLight}
           style={{ textAlign: "center", marginTop: spacingY._15 }}
         >
           {emptyListMessage}
@@ -112,10 +112,12 @@ const TransactionItem = ({
         </View>
 
         <View style={styles.categoryDes}>
-          <Typo size={17}>{category.label}</Typo>
+          <Typo size={17} color={colors.text}>
+            {category.label}
+          </Typo>
           <Typo
             size={12}
-            color={colors.neutral400}
+            color={colors.textLight}
             textProps={{ numberOfLines: 1 }}
           >
             {item?.description ? item?.description : "-"}
@@ -125,12 +127,12 @@ const TransactionItem = ({
         <View style={styles.amountDate}>
           <Typo
             fontWeight={"500"}
-            color={item?.type === "income" ? colors.primary : colors.rose}
+            color={item?.type === "income" ? colors.income : colors.error}
           >
             {item?.type === "income" ? "+ $" : "- $"}
             {item?.amount}
           </Typo>
-          <Typo size={13} color={colors.neutral400}>
+          <Typo size={13} color={colors.textLight}>
             {date}
           </Typo>
         </View>
@@ -155,10 +157,12 @@ const styles = StyleSheet.create({
     gap: spacingX._12,
     marginBottom: spacingY._12,
     // list with background
-    backgroundColor: colors.neutral800,
+    backgroundColor: colors.card,
     padding: spacingY._10,
     paddingHorizontal: spacingY._10,
-    borderRadius: radius._17,
+    borderRadius: radius._16,
+    borderWidth: 1,
+    borderColor: colors.border,
   },
   icon: {
     height: verticalScale(44),

@@ -1,13 +1,13 @@
 import { useRouter } from "expo-router";
-import { orderBy, where } from "firebase/firestore";
-import { PlusCircleIcon } from "phosphor-react-native";
-import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
-import { Loading, ScreenWrapper, Typo, WalletListItem } from "../../components";
-import { colors, radius, spacingX, spacingY } from "../../constants/theme";
-import { useAuth } from "../../contexts/authContext";
-import useFetchData from "../../hooks/useFetchData";
 import { WalletType } from "../../types";
 import { verticalScale } from "../../utils/styling";
+import { orderBy, where } from "firebase/firestore";
+import useFetchData from "../../hooks/useFetchData";
+import { useAuth } from "../../contexts/authContext";
+import { PlusCircleIcon } from "phosphor-react-native";
+import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
+import { colors, radius, spacingX, spacingY } from "../../constants/theme";
+import { Loading, ScreenWrapper, Typo, WalletListItem } from "../../components";
 
 const Wallet = () => {
   const router = useRouter();
@@ -26,14 +26,17 @@ const Wallet = () => {
     }, 0);
 
   return (
-    <ScreenWrapper style={{ backgroundColor: colors.black }}>
+    <ScreenWrapper>
       <View style={styles.container}>
         <View style={styles.balanceView}>
           <View style={{ alignItems: "center" }}>
-            <Typo size={45} fontWeight={"500"}>
-              <Typo size={16}>$</Typo> {getTotalBalance()?.toFixed(2)}
+            <Typo size={45} fontWeight={"500"} color={colors.white}>
+              <Typo size={16} color={colors.white}>
+                $
+              </Typo>{" "}
+              {getTotalBalance()?.toFixed(2)}
             </Typo>
-            <Typo size={16} color={colors.neutral300}>
+            <Typo size={16} color={colors.white}>
               Total Balance
             </Typo>
           </View>
@@ -41,7 +44,7 @@ const Wallet = () => {
 
         <View style={styles.wallets}>
           <View style={styles.flexRow}>
-            <Typo size={20} fontWeight={"500"}>
+            <Typo size={20} fontWeight={"500"} color={colors.text}>
               My Wallets
             </Typo>
             <TouchableOpacity
@@ -80,7 +83,7 @@ const styles = StyleSheet.create({
   },
   balanceView: {
     height: verticalScale(160),
-    backgroundColor: colors.black,
+    backgroundColor: colors.primary,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -88,11 +91,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: spacingY._10,
+    marginBottom: spacingY._5,
   },
   wallets: {
     flex: 1,
-    backgroundColor: colors.neutral900,
+    backgroundColor: colors.card,
     borderTopRightRadius: radius._30,
     borderTopLeftRadius: radius._30,
     padding: spacingX._20,

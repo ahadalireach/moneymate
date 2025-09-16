@@ -16,6 +16,10 @@ import {
   ModalWrapper,
   Typo,
 } from "../../components";
+import {
+  createOrUpdateTransaction,
+  deleteTransaction,
+} from "../../services/transactionService";
 import { useEffect, useState } from "react";
 import { TrashIcon } from "phosphor-react-native";
 import useFetchData from "../../hooks/useFetchData";
@@ -28,10 +32,6 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { colors, radius, spacingX, spacingY } from "../../constants/theme";
 import { expenseCategories, transactionTypes } from "../../constants/data";
-import {
-  createOrUpdateTransaction,
-  deleteTransaction,
-} from "../../services/transactionService";
 
 const TransactionModal = () => {
   const router = useRouter();
@@ -85,7 +85,16 @@ const TransactionModal = () => {
         walletId: oldTransaction.walletId,
       });
     }
-  }, []);
+  }, [
+    oldTransaction?.id,
+    oldTransaction?.type,
+    oldTransaction?.category,
+    oldTransaction.amount,
+    oldTransaction.description,
+    oldTransaction?.image,
+    oldTransaction.date,
+    oldTransaction.walletId,
+  ]);
 
   const onSubmit = async () => {
     const { type, amount, description, category, date, walletId, image } =
@@ -168,7 +177,7 @@ const TransactionModal = () => {
         <Header
           title={oldTransaction?.id ? "Update Transaction" : "New Transaction"}
           leftIcon={<BackButton />}
-          style={{ marginBottom: spacingY._10 }}
+          style={{ marginBottom: spacingY._5 }}
         />
 
         <ScrollView
@@ -176,12 +185,12 @@ const TransactionModal = () => {
           showsVerticalScrollIndicator={false}
         >
           <View style={styles.inputContainer}>
-            <Typo color={colors.neutral200} size={16}>
+            <Typo color={colors.text} size={16}>
               Type
             </Typo>
             <Dropdown
               style={styles.dropdownContainer}
-              activeColor={colors.neutral700}
+              activeColor={colors.primaryLight}
               selectedTextStyle={styles.dropdownSelectedText}
               iconStyle={styles.dropdownIcon}
               data={transactionTypes}
@@ -199,12 +208,12 @@ const TransactionModal = () => {
           </View>
 
           <View style={styles.inputContainer}>
-            <Typo color={colors.neutral200} size={16}>
+            <Typo color={colors.text} size={16}>
               Wallet
             </Typo>
             <Dropdown
               style={styles.dropdownContainer}
-              activeColor={colors.neutral700}
+              activeColor={colors.primaryLight}
               placeholderStyle={styles.dropdownPlaceholder}
               selectedTextStyle={styles.dropdownSelectedText}
               iconStyle={styles.dropdownIcon}
@@ -228,12 +237,12 @@ const TransactionModal = () => {
 
           {transaction.type === "expense" && (
             <View style={styles.inputContainer}>
-              <Typo color={colors.neutral200} size={16}>
+              <Typo color={colors.text} size={16}>
                 Category
               </Typo>
               <Dropdown
                 style={styles.dropdownContainer}
-                activeColor={colors.neutral700}
+                activeColor={colors.primaryLight}
                 placeholderStyle={styles.dropdownPlaceholder}
                 selectedTextStyle={styles.dropdownSelectedText}
                 iconStyle={styles.dropdownIcon}
@@ -254,7 +263,7 @@ const TransactionModal = () => {
           )}
 
           <View style={styles.inputContainer}>
-            <Typo color={colors.neutral200} size={16}>
+            <Typo color={colors.text} size={16}>
               Date
             </Typo>
             {!showDatePicker && (
@@ -271,7 +280,7 @@ const TransactionModal = () => {
             {showDatePicker && (
               <View>
                 <DateTimePicker
-                  themeVariant="dark"
+                  themeVariant="light"
                   value={transaction.date as Date}
                   textColor={colors.white}
                   mode="date"
@@ -293,7 +302,7 @@ const TransactionModal = () => {
           </View>
 
           <View style={styles.inputContainer}>
-            <Typo color={colors.neutral200} size={16}>
+            <Typo color={colors.text} size={16}>
               Amount
             </Typo>
             <Input
@@ -310,7 +319,7 @@ const TransactionModal = () => {
 
           <View style={styles.inputContainer}>
             <View style={styles.flexRow}>
-              <Typo color={colors.neutral200} size={16}>
+              <Typo color={colors.text} size={16}>
                 Description
               </Typo>
               <Typo color={colors.neutral500} size={14}>
@@ -326,7 +335,7 @@ const TransactionModal = () => {
                 paddingVertical: 15,
               }}
               value={transaction.description}
-              placeholder="e.g. Bought apple juice"
+              placeholder="Add notes"
               onChangeText={(value) => {
                 setTransaction({
                   ...transaction,
@@ -338,10 +347,10 @@ const TransactionModal = () => {
 
           <View style={styles.inputContainer}>
             <View style={styles.flexRow}>
-              <Typo color={colors.neutral200} size={16}>
+              <Typo color={colors.text} size={16}>
                 Receipt
               </Typo>
-              <Typo color={colors.neutral500} size={14}>
+              <Typo color={colors.textLight} size={14}>
                 (optional)
               </Typo>
             </View>
@@ -362,7 +371,7 @@ const TransactionModal = () => {
           <Button
             onPress={showDeleteAlert}
             style={{
-              backgroundColor: colors.rose,
+              backgroundColor: colors.error,
               paddingHorizontal: spacingX._15,
             }}
           >
@@ -374,7 +383,7 @@ const TransactionModal = () => {
           </Button>
         )}
         <Button isLoading={isLoading} onPress={onSubmit} style={{ flex: 1 }}>
-          <Typo color={colors.black} fontWeight={"700"}>
+          <Typo color={colors.white} fontWeight={"700"}>
             {oldTransaction?.id ? "Update Transaction" : "Add Transaction"}
           </Typo>
         </Button>
@@ -392,7 +401,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: verticalScale(14),
-    color: colors.neutral200,
+    color: colors.text,
     marginBottom: spacingY._5,
   },
   form: {
@@ -407,7 +416,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacingX._20,
     gap: scale(12),
     paddingTop: spacingY._15,
-    borderTopColor: colors.neutral700,
+    borderTopColor: colors.border,
     marginBottom: spacingY._5,
     borderTopWidth: 1,
   },
@@ -421,9 +430,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     fontSize: verticalScale(14),
     borderWidth: 1,
-    color: colors.white,
-    borderColor: colors.neutral300,
-    borderRadius: radius._17,
+    color: colors.text,
+    borderColor: colors.neutral200,
+    borderRadius: radius._16,
     borderCurve: "continuous",
     paddingHorizontal: spacingX._15,
   },
@@ -433,9 +442,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderWidth: 1,
     fontSize: verticalScale(14),
-    color: colors.white,
-    borderColor: colors.neutral300,
-    borderRadius: radius._17,
+    color: colors.text,
+    borderColor: colors.neutral200,
+    borderRadius: radius._16,
     borderCurve: "continuous",
   },
   flexRow: {
@@ -448,13 +457,14 @@ const styles = StyleSheet.create({
     height: verticalScale(54),
     alignItems: "center",
     borderWidth: 1,
-    borderColor: colors.neutral300,
-    borderRadius: radius._17,
+    borderColor: colors.border,
+    borderRadius: radius._16,
     borderCurve: "continuous",
     paddingHorizontal: spacingX._15,
+    backgroundColor: colors.surface,
   },
   datePickerButton: {
-    backgroundColor: colors.neutral700,
+    backgroundColor: colors.primary,
     alignSelf: "flex-end",
     padding: spacingY._7,
     marginRight: spacingX._7,
@@ -464,38 +474,45 @@ const styles = StyleSheet.create({
   dropdownContainer: {
     height: verticalScale(54),
     borderWidth: 1,
-    borderColor: colors.neutral300,
+    borderColor: colors.border,
     paddingHorizontal: spacingX._15,
-    borderRadius: radius._15,
+    borderRadius: radius._16,
     borderCurve: "continuous",
+    backgroundColor: colors.surface,
   },
-  dropdownItemText: { color: colors.white },
+  dropdownItemText: {
+    color: colors.text,
+    fontSize: verticalScale(16),
+  },
   dropdownSelectedText: {
-    color: colors.white,
-    fontSize: verticalScale(14),
+    color: colors.text,
+    fontSize: verticalScale(16),
   },
   dropdownListContainer: {
-    backgroundColor: colors.neutral900,
+    backgroundColor: colors.card,
     borderRadius: radius._15,
     borderCurve: "continuous",
     paddingVertical: spacingY._7,
     top: 5,
-    borderColor: colors.neutral500,
-    shadowColor: colors.black,
+    borderColor: colors.border,
+    shadowColor: colors.shadow,
     shadowOffset: { width: 0, height: 5 },
-    shadowOpacity: 1,
+    shadowOpacity: 0.15,
     shadowRadius: 15,
     elevation: 5,
   },
   dropdownPlaceholder: {
-    color: colors.white,
+    color: colors.neutral400,
+    fontSize: verticalScale(16),
   },
   dropdownItemContainer: {
-    borderRadius: radius._15,
+    borderRadius: radius._10,
     marginHorizontal: spacingX._7,
+    paddingVertical: spacingY._7,
   },
   dropdownIcon: {
-    height: verticalScale(30),
-    tintColor: colors.neutral300,
+    height: verticalScale(20),
+    width: verticalScale(20),
+    tintColor: colors.neutral400,
   },
 });

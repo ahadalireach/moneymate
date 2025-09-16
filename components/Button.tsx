@@ -12,8 +12,8 @@ const Button = ({
 }: CustomButtonProps) => {
   if (isLoading) {
     return (
-      <View style={[styles.button, style, { backgroundColor: "transparent" }]}>
-        <Loading />
+      <View style={[styles.button, style]}>
+        <Loading color={colors.white} size="large" />
       </View>
     );
   }
@@ -29,10 +29,15 @@ export default Button;
 const styles = StyleSheet.create({
   button: {
     backgroundColor: colors.primary,
-    borderRadius: radius._17,
+    borderRadius: radius._16,
     borderCurve: "continuous",
     height: verticalScale(52),
     justifyContent: "center",
     alignItems: "center",
+    shadowColor: colors.primary,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 12,
+    elevation: 6,
   },
 });

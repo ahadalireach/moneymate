@@ -60,7 +60,7 @@ const Welcome = () => {
             style={styles.buttonContainer}
           >
             <Button onPress={() => router.push("/(auth)/Register")}>
-              <Typo size={22} color={colors.neutral900} fontWeight={"600"}>
+              <Typo size={22} color={colors.white} fontWeight={"600"}>
                 Get Started
               </Typo>
             </Button>
@@ -99,25 +99,27 @@ const styles = StyleSheet.create({
     marginTop: verticalScale(50),
   },
   footer: {
-    backgroundColor: "#000000",
+    backgroundColor: colors.background,
     alignItems: "center",
     paddingTop: spacingY._40,
     paddingBottom: spacingY._50,
     gap: spacingY._25,
-    shadowColor: "white",
+    shadowColor: colors.shadow,
     shadowOffset: { width: 0, height: -10 },
     elevation: 10,
     shadowRadius: 25,
     shadowOpacity: 0.15,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
+    borderWidth: 1,
+    borderColor: colors.border,
   },
   titleContainer: {
     alignItems: "center",
   },
   titleText: {
     textAlign: "center",
-    color: colors.white,
+    color: colors.text,
     lineHeight: 38,
   },
   subtitleContainer: {

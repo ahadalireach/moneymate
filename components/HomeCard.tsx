@@ -3,14 +3,19 @@ import {
   ArrowUpIcon,
   DotsThreeOutlineIcon,
 } from "phosphor-react-native";
-import Typo from "./Typo";
-import { ImageBackground } from "expo-image";
 import { StyleSheet, View } from "react-native";
-import { scale, verticalScale } from "../utils/styling";
-import { colors, spacingX, spacingY } from "../constants/theme";
-import { useAuth } from "../contexts/authContext";
+import {
+  colors,
+  spacingX,
+  spacingY,
+  radius,
+  shadows,
+} from "../constants/theme";
+import Typo from "./Typo";
 import { WalletType } from "../types";
 import useFetchData from "../hooks/useFetchData";
+import { verticalScale } from "../utils/styling";
+import { useAuth } from "../contexts/authContext";
 import { orderBy, where } from "firebase/firestore";
 
 const HomeCard = () => {
@@ -34,116 +39,190 @@ const HomeCard = () => {
   };
 
   return (
-    <ImageBackground
-      source={require("../assets/images/card.png")}
-      resizeMode="stretch"
-      style={styles.bgImage}
-    >
-      <View style={styles.container}>
-        <View>
-          <View style={styles.totalBalanceRow}>
-            <Typo size={17} fontWeight={"500"} color={colors.neutral800}>
-              Total Balance
-            </Typo>
-            <DotsThreeOutlineIcon
-              size={verticalScale(23)}
-              color={colors.black}
-              weight="fill"
-            />
-          </View>
-          <Typo color={colors.black} size={30} fontWeight={"bold"}>
-            <Typo color={colors.black} fontWeight={"bold"} size={16}>
-              $
-            </Typo>{" "}
-            {walletLoading ? "----" : getTotals()?.balance.toFixed(2)}
-          </Typo>
-        </View>
-
-        <View style={styles.stats}>
-          <View style={{ gap: verticalScale(5) }}>
-            <View style={styles.incomeExpense}>
-              <View style={styles.statsIcon}>
-                <ArrowDownIcon
-                  size={verticalScale(15)}
-                  color={colors.black}
-                  weight="bold"
+    <View style={styles.cardWrapper}>
+      <View style={styles.bgSolid}>
+        <View style={styles.container}>
+          <View>
+            <View style={styles.totalBalanceRow}>
+              <Typo size={16} fontWeight={"medium"} color={colors.white}>
+                Total Balance
+              </Typo>
+              <View style={styles.dotsContainer}>
+                <DotsThreeOutlineIcon
+                  size={verticalScale(22)}
+                  color={colors.white}
+                  weight="fill"
                 />
               </View>
-              <Typo size={16} color={colors.neutral700} fontWeight={"500"}>
-                Income
-              </Typo>
             </View>
-            <View style={{ alignSelf: "center" }}>
-              <Typo size={17} color={colors.green} fontWeight={"600"}>
-                <Typo color={colors.green} fontWeight={"600"} size={12}>
+            <View style={styles.balanceContainer}>
+              <Typo color={colors.white} size={36} fontWeight={"800"}>
+                <Typo color={colors.white} fontWeight={"800"} size={20}>
                   $
                 </Typo>{" "}
-                {walletLoading ? "----" : getTotals()?.income.toFixed(2)}
+                {walletLoading ? "----" : getTotals()?.balance.toFixed(2)}
               </Typo>
             </View>
           </View>
 
-          <View style={{ gap: verticalScale(5) }}>
-            <View style={styles.incomeExpense}>
-              <View style={styles.statsIcon}>
-                <ArrowUpIcon
-                  size={verticalScale(15)}
-                  color={colors.black}
-                  weight="bold"
-                />
+          <View style={styles.stats}>
+            <View style={styles.statItem}>
+              <View style={styles.statCard}>
+                <View style={styles.incomeExpense}>
+                  <View
+                    style={[
+                      styles.statsIcon,
+                      { backgroundColor: "rgba(16, 185, 129, 0.15)" },
+                    ]}
+                  >
+                    <ArrowDownIcon
+                      size={verticalScale(16)}
+                      color={colors.incomeLight}
+                      weight="bold"
+                    />
+                  </View>
+                  <Typo size={14} color={colors.incomeLight} fontWeight={"600"}>
+                    Income
+                  </Typo>
+                </View>
+                <View style={styles.amountContainer}>
+                  <Typo size={18} color={colors.incomeLight} fontWeight={"700"}>
+                    <Typo
+                      color={colors.incomeLight}
+                      fontWeight={"700"}
+                      size={12}
+                    >
+                      $
+                    </Typo>{" "}
+                    {walletLoading ? "----" : getTotals()?.income.toFixed(2)}
+                  </Typo>
+                </View>
               </View>
-              <Typo size={16} color={colors.neutral700} fontWeight={"500"}>
-                Expense
-              </Typo>
             </View>
-            <View style={{ alignSelf: "center" }}>
-              <Typo size={17} color={colors.rose} fontWeight={"600"}>
-                <Typo color={colors.rose} fontWeight={"600"} size={12}>
-                  $
-                </Typo>{" "}
-                {walletLoading ? "----" : getTotals()?.expenses.toFixed(2)}
-              </Typo>
+
+            <View style={styles.statItem}>
+              <View style={styles.statCard}>
+                <View style={styles.incomeExpense}>
+                  <View
+                    style={[
+                      styles.statsIcon,
+                      { backgroundColor: "rgba(239, 68, 68, 0.15)" },
+                    ]}
+                  >
+                    <ArrowUpIcon
+                      size={verticalScale(16)}
+                      color={colors.expenseLight}
+                      weight="bold"
+                    />
+                  </View>
+                  <Typo
+                    size={14}
+                    color={colors.expenseLight}
+                    fontWeight={"600"}
+                  >
+                    Expense
+                  </Typo>
+                </View>
+                <View style={styles.amountContainer}>
+                  <Typo
+                    size={18}
+                    color={colors.expenseLight}
+                    fontWeight={"700"}
+                  >
+                    <Typo
+                      color={colors.expenseLight}
+                      fontWeight={"700"}
+                      size={12}
+                    >
+                      $
+                    </Typo>{" "}
+                    {walletLoading ? "----" : getTotals()?.expenses.toFixed(2)}
+                  </Typo>
+                </View>
+              </View>
             </View>
           </View>
         </View>
       </View>
-    </ImageBackground>
+    </View>
   );
 };
 
 export default HomeCard;
 
 const styles = StyleSheet.create({
-  bgImage: {
-    height: scale(210),
+  cardWrapper: {
+    borderRadius: radius._24,
+    ...shadows.large,
+    overflow: "hidden",
+    marginVertical: spacingY._5,
+  },
+  bgSolid: {
+    minHeight: verticalScale(220),
     width: "100%",
+    borderRadius: radius._24,
+    backgroundColor: colors.primary,
+    borderWidth: 1,
+    borderColor: colors.primaryLight,
   },
   container: {
-    padding: spacingX._20,
-    paddingHorizontal: scale(23),
-    height: "87%",
-    width: "100%",
+    flex: 1,
+    padding: spacingX._25,
+    paddingVertical: verticalScale(20),
     justifyContent: "space-between",
+  },
+  dotsContainer: {
+    backgroundColor: "rgba(255, 255, 255, 0.15)",
+    borderRadius: radius._12,
+    padding: spacingY._7,
+  },
+  balanceContainer: {
+    marginTop: verticalScale(8),
+    marginBottom: verticalScale(15),
   },
   totalBalanceRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: spacingY._5,
+    marginBottom: verticalScale(5),
   },
   stats: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: "flex-end",
+    paddingTop: verticalScale(15),
+    gap: spacingX._10,
+  },
+  statItem: {
+    flex: 1,
+  },
+  statCard: {
+    backgroundColor: colors.white,
+    borderRadius: radius._15,
+    padding: verticalScale(12),
+    borderWidth: 1,
+    borderColor: colors.border,
+    shadowColor: colors.shadow,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   statsIcon: {
-    backgroundColor: colors.neutral350,
-    padding: spacingY._5,
-    borderRadius: 50,
+    padding: spacingY._7,
+    borderRadius: radius._12,
+    width: verticalScale(36),
+    height: verticalScale(36),
+    justifyContent: "center",
+    alignItems: "center",
   },
   incomeExpense: {
     flexDirection: "row",
     alignItems: "center",
-    gap: spacingY._7,
+    gap: spacingX._10,
+    marginBottom: spacingY._10,
+  },
+  amountContainer: {
+    alignItems: "flex-start",
   },
 });

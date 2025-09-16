@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   BackButton,
   Header,
@@ -6,12 +5,13 @@ import {
   ModalWrapper,
   TransactionList,
 } from "../../components";
+import { useState } from "react";
+import { TransactionType } from "../../types";
+import { orderBy, where } from "firebase/firestore";
+import useFetchData from "../../hooks/useFetchData";
+import { useAuth } from "../../contexts/authContext";
 import { colors, spacingY } from "../../constants/theme";
 import { ScrollView, StyleSheet, View } from "react-native";
-import { useAuth } from "../../contexts/authContext";
-import { orderBy, where } from "firebase/firestore";
-import { TransactionType } from "../../types";
-import useFetchData from "../../hooks/useFetchData";
 
 const SearchModal = () => {
   const { user } = useAuth();
@@ -43,15 +43,15 @@ const SearchModal = () => {
         <Header
           title={"Search"}
           leftIcon={<BackButton />}
-          style={{ marginBottom: spacingY._10 }}
+          style={{ marginBottom: spacingY._5 }}
         />
         <ScrollView contentContainerStyle={styles.form}>
           <View style={styles.inputContainer}>
             <Input
-              placeholder="shoes..."
+              placeholder="Search transactions"
               value={search}
-              placeholderTextColor={colors.neutral400}
-              containerStyle={{ backgroundColor: colors.neutral800 }}
+              placeholderTextColor={colors.textLight}
+              containerStyle={{ backgroundColor: colors.card }}
               onChangeText={(text) => setSearch(text)}
             />
           </View>

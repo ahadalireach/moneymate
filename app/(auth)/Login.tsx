@@ -8,10 +8,10 @@ import {
 import { useRouter } from "expo-router";
 import { useRef, useState } from "react";
 import { verticalScale } from "../../utils/styling";
+import { useAuth } from "../../contexts/authContext";
 import { AtIcon, LockIcon } from "phosphor-react-native";
 import { colors, spacingY } from "../../constants/theme";
 import { Alert, Pressable, StyleSheet, View } from "react-native";
-import { useAuth } from "../../contexts/authContext";
 
 const Login = () => {
   const { login } = useAuth();
@@ -33,7 +33,7 @@ const Login = () => {
       if (!res.success) {
         Alert.alert("Login", res.msg);
       } else {
-        Alert.alert("Success", "Loggedin successfully!");
+        Alert.alert("Success", "Logged in successfully!");
       }
     } catch (error: any) {
       console.error("Registration error:", error);
@@ -48,10 +48,10 @@ const Login = () => {
         <BackButton iconSize={28} />
 
         <View style={{ gap: spacingY._7, marginTop: spacingY._20 }}>
-          <Typo size={30} fontWeight={"800"}>
+          <Typo size={30} fontWeight={"800"} color={colors.text}>
             Hey,
           </Typo>
-          <Typo size={30} fontWeight={"800"}>
+          <Typo size={30} fontWeight={"800"} color={colors.text}>
             Welcome Back
           </Typo>
         </View>
@@ -72,8 +72,8 @@ const Login = () => {
             icon={<LockIcon size={26} color={colors.neutral400} />}
           />
 
-          <Button onPress={handleSubmit} loading={isLoading}>
-            <Typo fontWeight={"700"} color={colors.black} size={20}>
+          <Button onPress={handleSubmit} isLoading={isLoading}>
+            <Typo fontWeight={"700"} color={colors.white} size={20}>
               Sign In
             </Typo>
           </Button>

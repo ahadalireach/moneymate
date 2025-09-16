@@ -17,30 +17,30 @@ export default function CustomTabs({
   const tabbarIcons: any = {
     index: (isFocused: boolean) => (
       <HouseIcon
-        size={verticalScale(30)}
+        size={verticalScale(26)}
         weight={isFocused ? "fill" : "regular"}
-        color={isFocused ? colors.primary : colors.neutral400}
+        color={isFocused ? colors.primary : colors.textLight}
       />
     ),
     Statistics: (isFocused: boolean) => (
       <ChartBarIcon
-        size={verticalScale(30)}
+        size={verticalScale(26)}
         weight={isFocused ? "fill" : "regular"}
-        color={isFocused ? colors.primary : colors.neutral400}
+        color={isFocused ? colors.primary : colors.textLight}
       />
     ),
     Wallet: (isFocused: boolean) => (
       <WalletIcon
-        size={verticalScale(30)}
+        size={verticalScale(26)}
         weight={isFocused ? "fill" : "regular"}
-        color={isFocused ? colors.primary : colors.neutral400}
+        color={isFocused ? colors.primary : colors.textLight}
       />
     ),
     Profile: (isFocused: boolean) => (
       <UserIcon
-        size={verticalScale(30)}
+        size={verticalScale(26)}
         weight={isFocused ? "fill" : "regular"}
-        color={isFocused ? colors.primary : colors.neutral400}
+        color={isFocused ? colors.primary : colors.textLight}
       />
     ),
   };
@@ -93,16 +93,28 @@ const styles = StyleSheet.create({
   tabbar: {
     flexDirection: "row",
     width: "100%",
-    height: Platform.OS === "ios" ? verticalScale(73) : verticalScale(110),
-    backgroundColor: colors.neutral800,
+    height: Platform.OS === "ios" ? verticalScale(70) : verticalScale(85),
+    backgroundColor: colors.card,
     justifyContent: "space-around",
     alignItems: "center",
-    borderTopColor: colors.neutral700,
-    borderTopWidth: 1,
+    borderTopColor: colors.border,
+    borderTopWidth: 0.5,
+    shadowColor: colors.shadow,
+    shadowOffset: { width: 0, height: -2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 5,
+    paddingHorizontal: spacingY._15,
+    paddingBottom: Platform.OS === "ios" ? spacingY._25 : spacingY._15,
   },
   tabbarItem: {
-    marginBottom: Platform.OS === "ios" ? spacingY._10 : spacingY._5,
     justifyContent: "center",
     alignItems: "center",
+    paddingVertical: spacingY._12,
+    paddingHorizontal: spacingY._12,
+    borderRadius: 8,
+    minWidth: verticalScale(48),
+    minHeight: verticalScale(48),
+    flex: 1,
   },
 });

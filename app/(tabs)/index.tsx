@@ -6,15 +6,14 @@ import {
   Typo,
 } from "../../components";
 import { useRouter } from "expo-router";
+import { TransactionType } from "../../types";
+import useFetchData from "../../hooks/useFetchData";
 import { verticalScale } from "../../utils/styling";
 import { useAuth } from "../../contexts/authContext";
 import { limit, orderBy, where } from "firebase/firestore";
 import { colors, spacingX, spacingY } from "../../constants/theme";
 import { MagnifyingGlassIcon, PlusIcon } from "phosphor-react-native";
 import { ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
-import useFetchData from "../../hooks/useFetchData";
-import { TransactionType } from "../../types";
-
 const Home = () => {
   const router = useRouter();
 
@@ -34,10 +33,10 @@ const Home = () => {
       <View style={styles.container}>
         <View style={styles.header}>
           <View style={{ gap: 4 }}>
-            <Typo size={16} color={colors.neutral400}>
+            <Typo size={16} color={colors.textLight}>
               Hello,
             </Typo>
-            <Typo size={20} fontWeight={"500"}>
+            <Typo size={20} fontWeight={"500"} color={colors.text}>
               {user?.name}
             </Typo>
           </View>
@@ -47,7 +46,7 @@ const Home = () => {
           >
             <MagnifyingGlassIcon
               size={verticalScale(22)}
-              color={colors.neutral200}
+              color={colors.textSecondary}
               weight="bold"
             />
           </TouchableOpacity>
@@ -74,7 +73,7 @@ const Home = () => {
           style={styles.floatingButton}
         >
           <PlusIcon
-            color={colors.black}
+            color={colors.white}
             weight="bold"
             size={verticalScale(24)}
           />
@@ -96,12 +95,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: spacingY._10,
+    marginBottom: spacingY._5,
   },
   searchIcon: {
-    backgroundColor: colors.neutral700,
+    backgroundColor: colors.surface,
     padding: spacingX._10,
     borderRadius: 50,
+    borderWidth: 1,
+    borderColor: colors.border,
   },
   floatingButton: {
     height: verticalScale(50),

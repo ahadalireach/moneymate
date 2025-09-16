@@ -1,12 +1,11 @@
 import Typo from "./Typo";
 import { Image } from "expo-image";
 import { ImageUploadProps } from "../types";
-import * as Icons from "phosphor-react-native";
 import * as ImagePicker from "expo-image-picker";
-import { colors, radius } from "../constants/theme";
 import { scale, verticalScale } from "../utils/styling";
-import { UploadSimpleIcon } from "phosphor-react-native";
+import { UploadSimpleIcon, XCircleIcon } from "phosphor-react-native";
 import { getProfilePath } from "../services/imageService";
+import { colors, radius, spacingX } from "../constants/theme";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 const ImageUpload = ({
@@ -36,8 +35,12 @@ const ImageUpload = ({
           onPress={pickImage}
           style={[styles.inputContainer, containerStyle && containerStyle]}
         >
-          <UploadSimpleIcon color={colors.neutral200} />
-          {placeholder && <Typo size={15}>{placeholder}</Typo>}
+          <UploadSimpleIcon color={colors.primary} />
+          {placeholder && (
+            <Typo size={15} color={colors.textLight}>
+              {placeholder}
+            </Typo>
+          )}
         </TouchableOpacity>
       )}
       {file && (
@@ -49,10 +52,10 @@ const ImageUpload = ({
             transition={100}
           />
           <TouchableOpacity style={styles.deleteIcon} onPress={onClear}>
-            <Icons.XCircleIcon
-              size={verticalScale(24)}
+            <XCircleIcon
+              size={verticalScale(28)}
               weight="fill"
-              color={colors.white}
+              color={colors.error}
             />
           </TouchableOpacity>
         </View>
@@ -66,29 +69,34 @@ export default ImageUpload;
 const styles = StyleSheet.create({
   inputContainer: {
     height: verticalScale(54),
-    backgroundColor: colors.neutral700,
-    borderRadius: radius._15,
+    backgroundColor: colors.surface,
+    borderRadius: radius._16,
+    borderCurve: "continuous",
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     gap: 10,
     borderWidth: 1,
-    borderColor: colors.neutral500,
-    borderStyle: "dashed",
+    borderColor: colors.border,
+    paddingHorizontal: spacingX._15,
   },
   image: {
     height: scale(150),
     width: scale(150),
-    borderRadius: radius._15,
+    borderRadius: radius._16,
     borderCurve: "continuous",
     overflow: "hidden",
+    borderWidth: 1,
+    borderColor: colors.border,
   },
   deleteIcon: {
     position: "absolute",
     top: scale(6),
     right: scale(6),
-    shadowColor: colors.black,
-    shadowOpacity: 1,
-    shadowRadius: 10,
+    shadowColor: colors.shadow,
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 4,
   },
 });

@@ -9,9 +9,9 @@ import {
   fetchWeeklyStats,
   fetchYearlyStats,
 } from "../../services/transactionService";
-import { useEffect, useState } from "react";
 import { useAuth } from "../../contexts/authContext";
 import { BarChart } from "react-native-gifted-charts";
+import { useCallback, useEffect, useState } from "react";
 import { scale, verticalScale } from "../../utils/styling";
 import { Alert, ScrollView, StyleSheet, View } from "react-native";
 import { colors, radius, spacingX, spacingY } from "../../constants/theme";
@@ -25,19 +25,7 @@ const Statistics = () => {
   const [chartData, setChartData] = useState<any[]>([]);
   const [transactionData, setTransactionData] = useState<any[]>([]);
 
-  useEffect(() => {
-    if (activeIndex === 0) {
-      getWeeklyStats();
-    }
-    if (activeIndex === 1) {
-      getMonthlyStats();
-    }
-    if (activeIndex === 2) {
-      getYearlyStats();
-    }
-  }, [activeIndex]);
-
-  const getWeeklyStats = async () => {
+  const getWeeklyStats = useCallback(async () => {
     setIsLoading(true);
     try {
       let res = await fetchWeeklyStats(user?.uid as string);
@@ -53,9 +41,9 @@ const Statistics = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [user?.uid]);
 
-  const getMonthlyStats = async () => {
+  const getMonthlyStats = useCallback(async () => {
     setIsLoading(true);
     try {
       let res = await fetchMonthlyStats(user?.uid as string);
@@ -71,9 +59,9 @@ const Statistics = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [user?.uid]);
 
-  const getYearlyStats = async () => {
+  const getYearlyStats = useCallback(async () => {
     setIsLoading(true);
     try {
       let res = await fetchYearlyStats(user?.uid as string);
@@ -89,7 +77,19 @@ const Statistics = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [user?.uid]);
+
+  useEffect(() => {
+    if (activeIndex === 0) {
+      getWeeklyStats();
+    }
+    if (activeIndex === 1) {
+      getMonthlyStats();
+    }
+    if (activeIndex === 2) {
+      getYearlyStats();
+    }
+  }, [activeIndex, getWeeklyStats, getMonthlyStats, getYearlyStats]);
 
   return (
     <ScreenWrapper>
@@ -112,12 +112,12 @@ const Statistics = () => {
             onChange={(event) => {
               setActiveIndex(event.nativeEvent.selectedSegmentIndex);
             }}
-            tintColor={colors.neutral200}
-            backgroundColor={colors.neutral800}
-            appearance="dark"
+            tintColor={colors.primary}
+            backgroundColor={colors.neutral100}
+            appearance="light"
             activeFontStyle={styles.segmentFontStyle}
             style={styles.segmentStyle}
-            fontStyle={{ ...styles.segmentFontStyle, color: colors.white }}
+            fontStyle={{ ...styles.segmentFontStyle, color: colors.textLight }}
           />
 
           <View style={styles.chartContainer}>
@@ -137,11 +137,11 @@ const Statistics = () => {
                 }
                 hideYAxisText={false}
                 yAxisTextStyle={{
-                  color: colors.neutral350,
+                  color: colors.textLight,
                   fontSize: verticalScale(11),
                 }}
                 xAxisLabelTextStyle={{
-                  color: colors.neutral350,
+                  color: colors.textLight,
                   fontSize: verticalScale(12),
                 }}
                 noOfSections={3}
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
   segmentFontStyle: {
     fontSize: verticalScale(13),
     fontWeight: "bold",
-    color: colors.black,
+    color: colors.white,
   },
   container: {
     paddingHorizontal: spacingX._20,

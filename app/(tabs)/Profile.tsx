@@ -5,9 +5,9 @@ import {
   UserIcon,
   CaretRightIcon,
 } from "phosphor-react-native";
+import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import { signOut } from "firebase/auth";
-import { Image } from "expo-image";
 import { auth } from "../../config/firebase";
 import { accountOptionType } from "../../types";
 import { verticalScale } from "../../utils/styling";
@@ -23,22 +23,22 @@ const accountOptions: accountOptionType[] = [
     title: "Edit Profile",
     icon: <UserIcon size={26} color={colors.white} weight="fill" />,
     routeName: "/(modals)/ProfileModal",
-    bgColor: "#6366f1",
+    bgColor: colors.primary,
   },
   {
     title: "Settings",
     icon: <GearSixIcon size={26} color={colors.white} weight="fill" />,
-    bgColor: "#6366f1",
+    bgColor: colors.primary,
   },
   {
     title: "Privacy Policy",
     icon: <LockIcon size={26} color={colors.white} weight="fill" />,
-    bgColor: colors.neutral600,
+    bgColor: colors.neutral500,
   },
   {
     title: "Logout",
     icon: <PowerIcon size={26} color={colors.white} />,
-    bgColor: "#e11d48",
+    bgColor: colors.error,
   },
 ];
 
@@ -89,10 +89,10 @@ const Profile = () => {
             />
           </View>
           <View style={styles.nameContainer}>
-            <Typo size={24} fontWeight={"600"} color={colors.neutral100}>
+            <Typo size={24} fontWeight={"600"} color={colors.text}>
               {user?.name}
             </Typo>
-            <Typo size={15} color={colors.neutral400}>
+            <Typo size={15} color={colors.textLight}>
               {user?.email}
             </Typo>
           </View>
@@ -115,13 +115,18 @@ const Profile = () => {
                 >
                   {item.icon && item.icon}
                 </View>
-                <Typo size={16} style={{ flex: 1 }} fontWeight={"500"}>
+                <Typo
+                  size={17}
+                  style={{ flex: 1 }}
+                  fontWeight={"500"}
+                  color={colors.text}
+                >
                   {item.title}
                 </Typo>
                 <CaretRightIcon
                   size={verticalScale(20)}
                   weight="bold"
-                  color={colors.white}
+                  color={colors.textLight}
                 />
               </TouchableOpacity>
             </Animated.View>
@@ -150,21 +155,23 @@ const styles = StyleSheet.create({
   },
   avatar: {
     alignSelf: "center",
-    backgroundColor: colors.neutral300,
+    backgroundColor: colors.neutral500,
     height: verticalScale(135),
     width: verticalScale(135),
     borderRadius: 200,
+    borderWidth: 3,
+    borderColor: colors.neutral300,
   },
   editIcon: {
     position: "absolute",
     bottom: 5,
     right: 8,
     borderRadius: 50,
-    backgroundColor: colors.neutral100,
-    shadowColor: colors.black,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.25,
-    shadowRadius: 10,
+    backgroundColor: colors.card,
+    shadowColor: colors.shadow,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
     elevation: 4,
     padding: 5,
   },
@@ -176,21 +183,27 @@ const styles = StyleSheet.create({
   ListIcon: {
     height: verticalScale(44),
     width: verticalScale(44),
-    backgroundColor: colors.neutral500,
+    backgroundColor: colors.neutral100,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: radius._15,
     borderCurve: "continuous",
   },
   listItem: {
-    marginBottom: verticalScale(17),
+    marginBottom: verticalScale(12),
+    backgroundColor: colors.card,
+    padding: verticalScale(12),
+    paddingHorizontal: spacingX._12,
+    borderRadius: radius._16,
+    borderWidth: 1,
+    borderColor: colors.border,
   },
   accountOptions: {
-    marginTop: spacingY._35,
+    marginTop: spacingY._25,
   },
   flexRow: {
     flexDirection: "row",
     alignItems: "center",
-    gap: spacingX._10,
+    gap: spacingX._12,
   },
 });
