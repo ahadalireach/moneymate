@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import {
   collection,
   onSnapshot,
@@ -18,32 +17,41 @@ const useFetchData = <T>(
 
   useEffect(() => {
     if (!collectionName) return;
-    const collectionRef = collection(firestore, collectionName);
-    const q = query(collectionRef, ...constraints);
 
-    const unsub = onSnapshot(
-      q,
-      (snapshot) => {
-        const fetchedData = snapshot.docs.map((doc) => {
-          return {
-            id: doc.id,
-            ...doc.data(),
-          };
-        }) as T[];
-        setData(fetchedData);
-        setIsLoading(false);
-      },
-      (err) => {
-        console.log("Error fetching data:", err);
-        setError(err.message);
-        setIsLoading(false);
-      }
-    );
+    try {
+      const collectionRef = collection(firestore, collectionName);
+      const q = query(collectionRef, ...constraints);
 
-    return () => {
-      unsub();
-    };
-  }, []);
+      const unsub = onSnapshot(
+        q,
+        (snapshot) => {
+          const fetchedData = snapshot.docs.map((doc) => {
+            return {
+              id: doc.id,
+              ...doc.data(),
+            };
+          }) as T[];
+          setData(fetchedData);
+          setIsLoading(false);
+        },
+        (err) => {
+          console.log("Error fetching data:", err);
+          setError(err.message);
+          setIsLoading(false);
+        }
+      );
+
+      return () => {
+        unsub();
+      };
+    } catch (error: any) {
+      console.log("Query error:", error);
+      setData([]);
+      setIsLoading(false);
+      setError(error.message);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [collectionName]);
 
   return { data, isLoading, error };
 };

@@ -18,7 +18,9 @@ const SearchModal = () => {
 
   const [search, setSearch] = useState("");
 
-  const constraints = [where("uid", "==", user?.uid), orderBy("date", "desc")];
+  const constraints = user?.uid
+    ? [where("uid", "==", user.uid), orderBy("date", "desc")]
+    : [];
 
   const { data: allTransactions, isLoading: transactionsLoading } =
     useFetchData<TransactionType>("transactions", constraints);

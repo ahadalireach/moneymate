@@ -23,7 +23,7 @@ const HomeCard = () => {
 
   const { data: wallets, isLoading: walletLoading } = useFetchData<WalletType>(
     "wallets",
-    [where("uid", "==", user?.uid), orderBy("created", "desc")]
+    user?.uid ? [where("uid", "==", user.uid), orderBy("created", "desc")] : []
   );
 
   const getTotals = () => {
